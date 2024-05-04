@@ -1,0 +1,21 @@
+ns-train active-nerf-acc \
+    --vis tensorboard --trainer.max_num_iterations 100001 --pipeline.topk_iter 1000 \
+    --pipeline.datamanager.eval_num_rays_per_batch 256 --pipeline.model.eval_num_rays_per_chunk 128 \
+    --trainer.steps_per_eval_image 2500 --trainer.steps_per_eval_batch 2500 --trainer.steps_per_save 20000 \
+    --pipeline.model.steps_warmup 512 --pipeline.model.steps_per_grid_update 16 \
+    --trainer.steps_per_eval_all_images 100000 --pipeline.datamanager.train_num_rays_per_batch 512 \
+    --optimizers.fields.scheduler.max_steps 100001 \
+ --pipeline.model.acquisition frontier --pipeline.model.choose_multi_cam dist \
+ --pipeline.model.uncert_rgb_loss_mult 0.001 --pipeline.model.uncert_beta_loss_mult 0.01 \
+ --pipeline.model.uncert_sigma_loss_mult 0.0 --pipeline.model.uncertainty_net True \
+ --pipeline.model.entropy_type ent --pipeline.model.grid_sampling True \
+      --pipeline.model.background_color="white" --pipeline.model.disable_scene_contraction True \
+      --pipeline.model.cone_angle 0.0 --pipeline.model.alpha_sample_thre 0.0 \
+      --pipeline.model.near_plane 0.01 --pipeline.model.grid_levels 1 \
+      --pipeline.datamanager.num_topk_images 2 \
+      --pipeline.model.freq_reg_end 40000 --pipeline.model.posenc_len 63 \
+      --pipeline.model.frequency_regularizer True \
+      --pipeline.datamanager.precrop-iters 750 --pipeline.datamanager.precrop-frac 0.5 \
+    --experiment-name "nerf-acc-frontier-precrop-dist-100k1k-total10-Freq40k-${dataset}" \
+    blender-data --data "data/blender/${dataset}" --skip_every_for_val_split 4 \
+    --precrop-iters 750 --precrop-frac 0.5
